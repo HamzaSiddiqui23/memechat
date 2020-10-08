@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "963585322497",
+    "firebase_url": "https://memechat-6528d.firebaseio.com",
+    "project_id": "memechat-6528d",
+    "storage_bucket": "memechat-6528d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963585322497:android:6a364777f4f90ff059da00",
+        "android_client_info": {
+          "package_name": "com.krazykoalagames.meme_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963585322497-2v8g5ne7as7o7l100svjqqjq7pgv47n4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.krazykoalagames.meme_chat",
+            "certificate_hash": "82c5e9790289bf27e34c0f748cc8880e064c991e"
+          }
+        },
+        {
+          "client_id": "963585322497-4pq1oi10d615cnkt7568jo6vir1tblcm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD92bbiuq9on4wL57U7Se-ezczJKZnjVmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963585322497-4pq1oi10d615cnkt7568jo6vir1tblcm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "963585322497-ok32qonc1gabu2ujm2enqi0vlihjrjmq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.krazykoalagames.memeChat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
