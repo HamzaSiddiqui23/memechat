@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meme_chat/components/custom_app_bar.dart';
 import 'package:international_phone_input/international_phone_input.dart';
+import 'package:meme_chat/pages/new_user.dart';
 import '../data_classes/session.dart';
 
 class Login extends StatefulWidget {
@@ -18,14 +19,15 @@ class _LoginState extends State<Login> {
     _auth.verifyPhoneNumber(phoneNumber: phoneNumber, verificationCompleted: (AuthCredential authCredentials){
       setState(() {
         _auth.signInWithCredential(authCredentials).then((var results) {
+          Session().firebaseUser = results;
           result = 'Success! Logged In';
-          print(results);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => NewUser()));
         });
       });
     },
         verificationFailed: (FirebaseAuthException authException){
       setState(() {
-        result =  "Error ${authException.message}";
+        result =  "Error, Please check the number and try again";
         print(authException.message);
       });
         }
@@ -40,6 +42,8 @@ class _LoginState extends State<Login> {
                   children: <Widget>[
                     TextField(
                       controller: _codeController,
+                      maxLength: 6,
+                      textAlign: TextAlign.center,
                     ),
 
                   ],
@@ -51,16 +55,15 @@ class _LoginState extends State<Login> {
                     color: Colors.redAccent,
                     onPressed: () {
                       FirebaseAuth auth = FirebaseAuth.instance;
-
                       var smsCode = _codeController.text.trim();
-
-
                       var _credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
                       auth.signInWithCredential(_credential).then((var results){
-                        Navigator.pop(context);
                         setState(() {
-                          print(results);
+                          Session().firebaseUser = results;
                           result = "Success Log in";
+                          print(results);
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => NewUser()));
                         });
                       }).catchError((e){
                         print(e);
@@ -74,6 +77,7 @@ class _LoginState extends State<Login> {
         , timeout: Duration(seconds: 60), codeAutoRetrievalTimeout: (String verificationId){
           print(verificationId);
           print("Timeout");
+          result = "Error! Please check your number and try again";
         });
   }
 
@@ -101,35 +105,43 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(),
+      appBar: CustomAppBar(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Enter Phone Number', style: TextStyle(color: Colors.black,fontSize: 20),),
-            SizedBox(height: 50,),
-            ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 300),
-              child: InternationalPhoneInput(
-                  onPhoneNumberChange: onPhoneNumberChange,
-                  initialPhoneNumber: phoneNumber,
-                  initialSelection: phoneIsoCode,
-                  showCountryCodes: true,
-                enabledCountries: ["+1","+92"],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                radius:100,
+                child: Image.asset('assets/memechat.png'),
               ),
-            ),
-            SizedBox(height: 50,),
-            RaisedButton(
-              onPressed: (){
-                print(phoneNumber);
-                registerUser(phoneNumber, context);},
-              color: Colors.red,
-              child: Text('Submit',style: TextStyle(color: Colors.white),),
-            ),
-            SizedBox(height: 30,),
-            SizedBox(height: 50),
-            Text(result)
-          ],
+              SizedBox(height: 50,),
+              Text('Enter Phone Number For Verification', style: TextStyle(color: Colors.black,fontSize: 20),),
+              SizedBox(height: 50,),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 300),
+                child: InternationalPhoneInput(
+                    onPhoneNumberChange: onPhoneNumberChange,
+                    initialPhoneNumber: phoneNumber,
+                    initialSelection: phoneIsoCode,
+                    showCountryCodes: true,
+                  enabledCountries: ["+1","+92"],
+                ),
+              ),
+              SizedBox(height: 50,),
+              RaisedButton(
+                onPressed: (){
+                  print(phoneNumber);
+                  registerUser(phoneNumber, context);},
+                color: Colors.red,
+                child: Text('Submit',style: TextStyle(color: Colors.white),),
+              ),
+              SizedBox(height: 30,),
+              SizedBox(height: 50),
+              Text(result)
+            ],
+          ),
         ),
       ),
     );
